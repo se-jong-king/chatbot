@@ -18,6 +18,11 @@ from bot.core.embedding import embed_files
 from bot.core.qa import query_folder
 from bot.core.utils import get_llm
 
+import openai
+from utils.streamlit import append_history, undo, stream_display
+from utils.openai import Stream2Msgs
+import functions
+
 
 EMBEDDING = "openai"
 VECTOR_STORE = "faiss"

@@ -4,6 +4,9 @@ from bot.components.faq import faq
 from dotenv import load_dotenv
 import os
 
+from utils.streamlit import append_history, undo, stream_display
+from bot.functions import functions
+
 load_dotenv()
 
 
@@ -25,6 +28,26 @@ def sidebar():
         )
 
         st.session_state["OPENAI_API_KEY"] = api_key_input
+
+        # Role selection and Undo
+        st.header("Chat")
+        chat_role = st.selectbox("role", ["system", "assistant", "user", "function"], index=2)
+        st.button("Undo", on_click=undo)
+
+        # ChatCompletion parameters
+        st.header("Parameters")
+        chat_params = {
+         "model": st.selectbox("model", ["gpt-3.5-turbo-0613", "gpt-3.5-turbo-16k-0613", "gpt-4-0613", "gpt-4-32k-0613"]),
+         "n": st.number_input("n", min_value=1, value=1),
+         "temperature": st.slider("temperature", min_value=0.0, max_value=2.0, value=1.0),
+         "max_tokens": st.number_input("max_tokens", min_value=1, value=512),
+         "top_p": st.slider("top_p", min_value=0.0, max_value=1.0, value=1.0),
+         "presence_penalty": st.slider("presence_penalty", min_value=-2.0, max_value=2.0, value=0.0),
+         "frequency_penalty": st.slider("frequency_penalty", min_value=-2.0, max_value=2.0, value=0.0),
+         "stream": True,
+         }
+
+
 
         st.markdown("---")
         st.markdown("# About")
